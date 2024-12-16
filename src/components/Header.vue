@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import Logo from '../public/logo.png'
+import Slider1 from '../public/Slider_01.jpg'
+import Slider2 from '../public/Slider_02.jpg'
+import Slider3 from '../public/Slider_03.jpg'
+import Slider4 from '../public/Slider_04.jpg'
 
 const login = ref()
 const isActiveSearch = ref(false)
@@ -10,7 +14,14 @@ function handleLogin() {
     login.value = 'login'
 }
 
+const sliders = [
+Slider1, Slider2, Slider3, Slider4
+]
+const isMenuOpen = ref(false);
 
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
 </script>
 
 <template>
@@ -28,12 +39,16 @@ function handleLogin() {
                 <span>Call: +123456789</span>
             </div>
         </div>
+        <!--mobile menu icon-->
+      <div class="menu-icon hidden" @click="toggleMenu">
+        <i class="bx bx-menu"></i>
+      </div>
         <!--menu-bar----------------------------------------->
         <div class="navigation">
             <!--logo------------>
             <NuxtLink to="#" class="logo"><img :src="Logo"></NuxtLink>
             <!--menu----------------->
-            <ul class="menu">
+            <ul class="menu" :class="{ 'hidden': !isMenuOpen }">
                 <li>
                     <NuxtLink to="/home">Home</NuxtLink>
                 </li>
@@ -68,6 +83,11 @@ function handleLogin() {
         </div>
         <Search v-model="isActiveSearch" @close="isActiveSearch = false"/>
     </nav>
+    <!-- <el-carousel  height="65vh" >
+      <el-carousel-item v-for="item in sliders" :key="item" >
+        <img :src="item" class="bg-cover w-100% h-100%" />
+      </el-carousel-item>
+    </el-carousel> -->
     <Login v-model="login" @change-mode="login = $event" @close="login = ''" />
 </template>
 <style scoped>
@@ -212,8 +232,49 @@ nav {
     align-items: center;
     font-weight: 400;
 }
+/* CSS Mobile */
+.menu {
+  display: flex;
+  transition: all 0.3s ease-in-out;
+}
 
+.menu.hidden {
+  display: none; /* Ẩn menu */
+}
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  .navigation {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu-icon {
+    display: flex;
+    justify-content: end;
+    font-size: 2rem;
+    color: #555555;
+    cursor: pointer;
+  }
+
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .menu li {
+    width: 100%;
+    text-align: left;
+    margin: 10px 0;
+  }
+
+  .right-menu {
+    display: none; /* Ẩn các phần tử của right-menu trên mobile */
+  }
+}
 </style>
 
 
