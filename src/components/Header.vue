@@ -14,13 +14,11 @@ function handleLogin() {
     login.value = 'login'
 }
 
-const sliders = [
-Slider1, Slider2, Slider3, Slider4
-]
-const isMenuOpen = ref(false);
+const sliders = [Slider1, Slider2, Slider3, Slider4]
+const isMenuOpen = ref(false)
 
 function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
+  isMenuOpen.value = !isMenuOpen.value
 }
 </script>
 
@@ -34,21 +32,21 @@ function toggleMenu() {
                 <NuxtLink to="#"><i class='bx bxl-youtube'></i></NuxtLink>
                 <NuxtLink to="#"><i class='bx bxl-instagram'></i></NuxtLink>
             </div>
-            <!--phone-number------>
+            <!--phone-number------> 
             <div class="phone">
                 <span>Call: +123456789</span>
             </div>
         </div>
-        <!--mobile menu icon-->
-      <div class="menu-icon hidden" @click="toggleMenu">
-        <i class="bx bx-menu"></i>
-      </div>
-        <!--menu-bar----------------------------------------->
-        <div class="navigation">
-            <!--logo------------>
-            <NuxtLink to="#" class="logo"><img :src="Logo"></NuxtLink>
-            <!--menu----------------->
-            <ul class="menu" :class="{ 'hidden': !isMenuOpen }">
+        
+        <div class="toggle cursor-pointer" @click="toggleMenu">
+            <i class="bx bx-menu"></i>
+        </div>  
+        <!--menu-bar-->
+        <div class="navigation" :class="{ 'active': !isMenuOpen }">
+            <!--logo-->
+            <NuxtLink to="#" class="logo "><img :src="Logo"></NuxtLink>
+            <!--menu-->
+            <ul class="menu" :class="{ 'is-open': isMenuOpen }">
                 <li>
                     <NuxtLink to="/home">Home</NuxtLink>
                 </li>
@@ -66,7 +64,7 @@ function toggleMenu() {
                     <NuxtLink to="/kids">Kids</NuxtLink>
                 </li>
             </ul>
-            <!--right-menu----------->
+            <!--right-menu-->
             <div class="right-menu flex gap-2 cursor-pointer">
                 <div @click="handleSearch(true)" class="search">
                     <i class='bx bx-search'></i>
@@ -74,7 +72,7 @@ function toggleMenu() {
                 <div @click="handleLogin" class="user">
                     <i class='bx bx-user'></i>
                 </div>
-                <div href="#">
+                <div>
                     <i class="bx bx-cart">
                         <span class="num-cart-product">0</span>
                     </i>
@@ -83,11 +81,11 @@ function toggleMenu() {
         </div>
         <Search v-model="isActiveSearch" @close="isActiveSearch = false"/>
     </nav>
-    <!-- <el-carousel  height="65vh" >
+    <el-carousel  height="65vh" >
       <el-carousel-item v-for="item in sliders" :key="item" >
         <img :src="item" class="bg-cover w-100% h-100%" />
       </el-carousel-item>
-    </el-carousel> -->
+    </el-carousel>
     <Login v-model="login" @change-mode="login = $event" @close="login = ''" />
 </template>
 <style scoped>
@@ -106,12 +104,18 @@ body {
 
 ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 nav {
     width: 100%;
     box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.05);
     z-index: 100;
+}
+
+.toggle {
+  display: none;
 }
 
 .social-call {
@@ -154,6 +158,7 @@ nav {
 
 .menu {
     display: flex;
+    align-items: center;
 }
 
 .menu li {
@@ -166,6 +171,7 @@ nav {
 
 .menu li a .menu li NuxtLink {
     color: #555555;
+    text-decoration: none;
 }
 
 .right-menu a .right-menu NuxtLink {
@@ -242,39 +248,52 @@ nav {
   display: none; /* Ẩn menu */
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
-  .navigation {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .menu-icon {
-    display: flex;
-    justify-content: end;
+/* Mobile Styles */
+.menu-icon {
+    display: none;
     font-size: 2rem;
-    color: #555555;
     cursor: pointer;
-  }
+    color: #555555;
+}
 
-  .menu {
+.menu.is-open {
+    display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
     width: 100%;
-    background-color: #ffffff;
-    padding: 10px 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
+    height: 100%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
 
-  .menu li {
-    width: 100%;
-    text-align: left;
-    margin: 10px 0;
-  }
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+    }
+    .menu-icon {
+        display: flex;
+        justify-content: end;
+    }
+    .menu.is-open {
+        display: flex;
+    }    
+    .toggle{
+        display: flex !important;
+        justify-content: end;
+        position: absolute;
+        z-index: 1000;
+        top: 4px;
+        right: 4px;
+        font-size: 36px;
+    }
+}
 
-  .right-menu {
-    display: none; /* Ẩn các phần tử của right-menu trên mobile */
-  }
+@media (min-width: 769px) {
+    .menu {
+        display: flex !important;
+    }    
 }
 </style>
-
-
