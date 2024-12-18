@@ -7,10 +7,10 @@ import Slider4 from '../public/Slider_04.jpg'
 
 const login = ref()
 const isActiveSearch = ref(false)
-function handleSearch(mode: boolean) {    
+function handleSearch(mode: boolean) {
     isActiveSearch.value = mode
 }
-function handleLogin() {    
+function handleLogin() {
     login.value = 'login'
 }
 
@@ -18,34 +18,41 @@ const sliders = [Slider1, Slider2, Slider3, Slider4]
 const isMenuOpen = ref(false)
 
 function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value
+    isMenuOpen.value = !isMenuOpen.value
 }
+
+const { x, y } = useWindowScroll()
+
+const isFixed = ref(false)
+watch(() => y, () => {
+    if (y.value > 0) {
+        isFixed.value = true
+    } else {
+        isFixed.value = false
+    }
+}, { deep: true })
 </script>
 
 <template>
-    <nav>
+    <nav
+        :class="{ 'fixed top-0 w-full shadow-md bg-white transition-all duration-500 ease-in-out opacity-100 translate-y-0': isFixed }">
         <div class="social-call">
-            <!--social-links--->
             <div class="social">
                 <NuxtLink to="#"><i class='bx bxl-facebook'></i></NuxtLink>
                 <NuxtLink to="#"><i class='bx bxl-twitter'></i></NuxtLink>
                 <NuxtLink to="#"><i class='bx bxl-youtube'></i></NuxtLink>
                 <NuxtLink to="#"><i class='bx bxl-instagram'></i></NuxtLink>
             </div>
-            <!--phone-number------> 
             <div class="phone">
                 <span>Call: +123456789</span>
             </div>
         </div>
-        
+
         <div class="toggle cursor-pointer" @click="toggleMenu">
             <i class="bx bx-menu"></i>
-        </div>  
-        <!--menu-bar-->
+        </div>
         <div class="navigation" :class="{ 'active': !isMenuOpen }">
-            <!--logo-->
             <NuxtLink to="#" class="logo "><img :src="Logo"></NuxtLink>
-            <!--menu-->
             <ul class="menu" :class="{ 'is-open': isMenuOpen }">
                 <li>
                     <NuxtLink to="/home">Home</NuxtLink>
@@ -64,7 +71,6 @@ function toggleMenu() {
                     <NuxtLink to="/kids">Kids</NuxtLink>
                 </li>
             </ul>
-            <!--right-menu-->
             <div class="right-menu flex gap-2 cursor-pointer">
                 <div @click="handleSearch(true)" class="search">
                     <i class='bx bx-search'></i>
@@ -79,12 +85,12 @@ function toggleMenu() {
                 </div>
             </div>
         </div>
-        <Search v-model="isActiveSearch" @close="isActiveSearch = false"/>
+        <Search v-model="isActiveSearch" @close="isActiveSearch = false" />
     </nav>
-    <el-carousel  height="65vh" >
-      <el-carousel-item v-for="item in sliders" :key="item" >
-        <img :src="item" class="bg-cover w-100% h-100%" />
-      </el-carousel-item>
+    <el-carousel height="65vh">
+        <el-carousel-item v-for="item in sliders" :key="item">
+            <img :src="item" class="bg-cover w-100% h-100%" />
+        </el-carousel-item>
     </el-carousel>
     <Login v-model="login" @change-mode="login = $event" @close="login = ''" />
 </template>
@@ -111,11 +117,11 @@ ul {
 nav {
     width: 100%;
     box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.05);
-    z-index: 100;
+    z-index: 100;    
 }
 
 .toggle {
-  display: none;
+    display: none;
 }
 
 .social-call {
@@ -238,14 +244,16 @@ nav {
     align-items: center;
     font-weight: 400;
 }
+
 /* CSS Mobile */
 .menu {
-  display: flex;
-  transition: all 0.3s ease-in-out;
+    display: flex;
+    transition: all 0.3s ease-in-out;
 }
 
 .menu.hidden {
-  display: none; /* Ẩn menu */
+    display: none;
+    /* Ẩn menu */
 }
 
 /* Mobile Styles */
@@ -273,14 +281,17 @@ nav {
     .menu {
         display: none;
     }
+
     .menu-icon {
         display: flex;
         justify-content: end;
     }
+
     .menu.is-open {
         display: flex;
-    }    
-    .toggle{
+    }
+
+    .toggle {
         display: flex !important;
         justify-content: end;
         position: absolute;
@@ -294,6 +305,6 @@ nav {
 @media (min-width: 769px) {
     .menu {
         display: flex !important;
-    }    
+    }
 }
 </style>

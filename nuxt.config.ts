@@ -23,6 +23,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@element-plus/nuxt', '@unocss/nuxt',],   
+  modules: ['@nuxtjs/tailwindcss', '@element-plus/nuxt', '@unocss/nuxt', '@vueuse/nuxt',],   
   css: ['boxicons/css/boxicons.min.css', 'element-plus/dist/index.css']
 })

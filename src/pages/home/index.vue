@@ -110,6 +110,14 @@ function getRandomProducts(pds: any, count: number) {
     const shuffled = [...pds].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
 }
+
+const visibleDetail = ref(false)
+
+const curProductInfo = ref()
+function openDetailProduct(info: any) {
+    visibleDetail.value = true
+    curProductInfo.value = info
+}
 </script>
 
 <template>
@@ -138,16 +146,7 @@ function getRandomProducts(pds: any, count: number) {
         </div>
         <div class="product-container">
             <div v-for="item in products" :key="item.img" class="product-box">
-                <div class="product-img hover:scale-90 transition delay-150 duration-300 ease-in-out">
-                    <a href="#" class="add-cart">
-                        <i class='bx bx-cart-add'></i>
-                    </a>
-                    <img :src="item.img">
-                </div>
-                <div class="product-details">
-                    <a href="#" class="p-name">{{ item.name }}</a>
-                    <span class="p-price">{{ item.price }}</span>
-                </div>
+                <BoxProduct :item="item" @open-detail="openDetailProduct(item)"/>
             </div>
         </div>
     </section>
@@ -228,9 +227,10 @@ function getRandomProducts(pds: any, count: number) {
         </div>
     </footer>
     
+    <ProductDetail v-if="visibleDetail" v-model="visibleDetail" :product-info="curProductInfo"/>
 </template>
 
-<style scoped>
+<style>
 .feature-heading {
     display: flex;
     justify-content: center;
